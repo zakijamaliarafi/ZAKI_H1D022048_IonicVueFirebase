@@ -57,7 +57,7 @@
 - Menampilkan judul "Home" di bagian atas halaman.
 
 ### 3. Halaman Profile
-<img src="src/assets/login.png" alt="Screenshot" height="500">
+<img src="profile.png" alt="Screenshot" height="500">
 
 - Menampilkan informasi profil pengguna dalam bentuk daftar (ion-list).
 
