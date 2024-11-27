@@ -4,93 +4,44 @@
 
     Shift Baru : D
 
-# Tugas 9 - Pertemuan 10
-## Ionic Vue Firebase
 
-## Screenshot
+# Tugas 10 - Pertemuan 11
 
-### 1. Halaman Login
-<img src="login.png" alt="Screenshot" height="500">
+## CRUD Todo
 
-- Fungsi loginWithGoogle memulai proses autentikasi dengan menginisialisasi Google Auth menggunakan GoogleAuth.initialize. Ini memerlukan clientId dan scopes yang menentukan informasi apa saja yang akan diakses dari akun Google pengguna.
+### 1. Create 
 
-``` typescript
-    await GoogleAuth.initialize({
-        clientId: '190869532365-jo3u5nrnf3ddgvsvr9t9cckc67br4055.apps.googleusercontent.com',
-        scopes: ['profile', 'email'],
-        grantOfflineAccess: true,
-    });
-```
+<img src="create.png" height="300">
 
-- Setelah inisialisasi, pengguna diminta untuk login dengan Google melalui GoogleAuth.signIn(). Ini akan membuka antarmuka login Google.
+Fitur ini memungkinkan pengguna untuk menambahkan todo baru dengan mengisi input berupa judul dan deskripsi. Pengguna dapat menekan tombol "+" yang terletak di sudut kanan bawah untuk membuka jendela input. Setelah mengisi data yang diperlukan, pengguna dapat mengklik tombol "Add Todo" untuk menyimpan todo tersebut ke dalam Firestore.
 
-``` typescript
-    const googleUser = await GoogleAuth.signIn();
-```
-- Setelah pengguna berhasil login, aplikasi mendapatkan idToken dari objek googleUser.
+### 2. Read
 
-``` typescript
-    const idToken = googleUser.authentication.idToken;
-```
+<img src="read.png" height="300">
 
-- ID token yang diperoleh digunakan untuk membuat kredensial Firebase dengan GoogleAuthProvider.credential(idToken).
+Daftar Todo ditampilkan dalam dua bagian: Active Todos dan Completed Todos. Setiap todo yang ditampilkan mencakup:
+  - Title dari Todo
+  - Deskripsi dari Todo 
+  - Waktu pembuatan Todo 
 
-``` typescript
-    const credential = GoogleAuthProvider.credential(idToken);
-```
+### 3. Update
 
-- Kredensial yang dibuat digunakan untuk login ke Firebase dengan signInWithCredential(auth, credential). Ini akan mengautentikasi pengguna di Firebase dan mengembalikan objek pengguna.
+<img src="update.png" height="300">
 
-``` typescript
-    const result = await signInWithCredential(auth, credential);
-```
-- Informasi pengguna yang berhasil login disimpan dalam variabel user.
+<img src="update-2.png" height="300">
 
-``` typescript
-    user.value = result.user;
-```
+Tampilan ini muncul ketika ikon pensil diklik saat menggeser Todo yang sudah dibuat. Pengguna akan diarahkan ke halaman update yang berisi Title dan Description yang dapat diedit. Setelah melakukan perubahan, klik tombol "Edit Todo" untuk menyimpan pembaruan.
 
-### 2. Halaman Home
-<img src="home.png" alt="Screenshot" height="500">
+### 4. Delete
 
-- Halaman ini ditampilkan setelah pengguna berhasil melakukan login. Ini adalah halaman utama yang pengguna lihat setelah autentikasi.
-- Menampilkan judul "Home" di bagian atas halaman.
+<img src="delete.png" height="300">
 
-### 3. Halaman Profile
-<img src="profile.png" alt="Screenshot" height="500">
+Pengguna dapat menghapus todo dengan menggeser Todo ke arah kanan, yang akan memunculkan ikon tempat sampah. Pengguna dapat menghapus todo yang dipilih dengan mengklik ikon tempat sampah tersebut. Setelah itu, notifikasi akan muncul untuk menandakan bahwa Todo telah berhasil dihapus.
 
-- Menampilkan informasi profil pengguna dalam bentuk daftar (ion-list).
+### 5. Completed
 
-``` html
-    <ion-list>
-        <ion-item>
-            <ion-input label="Nama" :value="user?.displayName" :readonly="true"></ion-input>
-        </ion-item>
-    </ion-list>
-```
+<img src="completed.png" height="300">
 
-- Mengimpor dan menggunakan store autentikasi (useAuthStore) untuk mendapatkan informasi pengguna.
-- Membuat referensi untuk menyimpan informasi pengguna (user) dan foto pengguna (userPhoto).
-- Mendefinisikan fungsi logout yang memanggil metode logout dari authStore.
-- Mendefinisikan fungsi handleImageError yang mengganti foto pengguna dengan gambar default jika terjadi kesalahan saat memuat gambar.
+<img src="completed-2.png" height="300">
 
-``` html
-    <script setup lang="ts">
-    import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonIcon, IonLabel, IonAvatar, IonList, IonItem, IonInput } from '@ionic/vue';
-    import { ref } from 'vue';
-    import { exit } from 'ionicons/icons';
-    import { useAuthStore } from '@/stores/auth';
-
-    const authStore = useAuthStore();
-    const user = ref(authStore.user);
-    const userPhoto = ref(user.value?.photoURL || 'default-avatar.png');
-
-    const logout = () => {
-        authStore.logout();
-    };
-
-    const handleImageError = () => {
-        userPhoto.value = 'default-avatar.png';
-    };
-    </script>
-```
+Pengguna dapat memindahkan todo ke bagian "completed" dengan menggeser Todo ke arah kiri, yang akan memunculkan ikon centang. Pengguna dapat menandai todo yang dipilih dengan mengklik ikon centang tersebut. Setelah itu, todo yang dipilih akan berpindah ke bagian "completed".
